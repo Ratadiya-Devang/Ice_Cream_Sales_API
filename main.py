@@ -28,5 +28,5 @@ def predict(data:float):
     )
 
     prediction = model.predict(input_data)
-
-    return {"sales":prediction}
+    sales = int(prediction)
+    return {"sales":sales}
