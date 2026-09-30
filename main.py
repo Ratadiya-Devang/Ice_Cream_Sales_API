@@ -6,11 +6,19 @@ from pydantic import BaseModel,Field
 
 app = FastAPI()
 
-
+app.add_middleware( 
+    CORSMiddleware, 
+    allow_origins=["*"],
+    allow_credentials=True, 
+    allow_methods=["*"],
+    allow_headers=["*"], 
+    )
 
 model = joblib.load("model.pkl")
 
 
+
+class PredictionRequest(BaseModel): temperature: float = Field( ..., description="Temperature in Celsius" )
 
 
 @app.get("/")
