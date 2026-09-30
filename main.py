@@ -7,18 +7,10 @@ from pydantic import BaseModel,Field
 app = FastAPI()
 
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins = ["http://localhost:5173"],
-    allow_credentials = True,
-    allow_methods = ["*"],
-    allow_headers = ["*"],
-)
 
 model = joblib.load("model.pkl")
 
-class TempratureInput(BaseModel):
-    temprature:float
+
 
 
 @app.get("/")
@@ -26,16 +18,15 @@ def home():
     return {"msg":"temprature prediction api is running"}
 
 @app.post("/predict")
-def predict(data:TempratureInput):
-    temprature_value = data.temprature
+def predict(data:float):
+
 
 
     input_data = pd.DataFrame({
-        "Temperature_C":[temprature_value]
+        "Temperature_C":[data]
     }
     )
 
     prediction = model.predict(input_data)
 
-    return {"temprature":temprature_value,
-            "predict":float(prediction[0])}
+    return {"sales":prediction}
